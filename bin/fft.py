@@ -18,14 +18,14 @@ print ("Numpy version:{0}".format(np.__version__))
 ###########################グローバル変数の初期値###########################
 base_dir = os.path.dirname(__file__)    #カレントディレクトリ
 
-a_index = 1  #オーディオインデックス
+a_index =   #オーディオインデックス
 
 br = pyaudio.paInt16    #ビットレート
 sr = 44100  #サンプリングレート
 chunk = 1024  #ストリームサイズならびにFFTの窓幅
 
 #%%
-class inital:
+class initial:
     def __init__(self,base_dir,a_index,br,sr,chunk):
         #グローバル変数の取り込み
         self.base_dir = base_dir
@@ -52,16 +52,16 @@ class inital:
             "base_dir":self.base_dir
         }
 
-        if self.a_index == None:
-            x["params"]["a_index"] = ""
-        else:
-            x["params"]["a_index"] = str(self.a_index)
-
         x["params"] = {
             "br":self.br,
             "sr":self.sr,
             "chunk":self.chunk
         }
+
+        if self.a_index == None:
+            x["params"]["a_index"] = ""
+        else:
+            x["params"]["a_index"] = str(self.a_index)
 
         with open(os.path.splitext(
             os.path.basename(__file__))[0] + ".ini","w"
@@ -70,13 +70,15 @@ class inital:
 
     #設定値の読み出し
     def load_ini(self):
-        x = configparser.configparser.ConfigParser()
+        x = configparser.ConfigParser()
         x.read(
-            str(
-                self.base_dir + os.path.splitext(
-                    os.path.basename(__file__)
-                )[0] + ".ini"
-            )
+            os.path.join(
+                base_dir,str(
+                    os.path.splitext(
+                        os.path.basename(__file__)
+                        )[0] + ".ini"
+                    )
+                )
         )
 
         #グローバル変数との区別の為全て頭に"l_"をつけて読みだす
@@ -96,10 +98,12 @@ class inital:
     def bootup(self):
         #iniファイルの有無判定 存在すればiniファイルから変数を読み出す
         if os.path.exists(
-            str(
-                self.base_dir + os.path.splitext(
-                    os.path.basename(__file__)
-                    )[0] + ".ini"
+            os.path.join(
+                base_dir,str(
+                    os.path.splitext(
+                        os.path.basename(__file__)
+                        )[0] + ".ini"
+                    )
                 )
             ):
             self.base_dir,self.a_index,self.br,self.sr,self.chunk = self.load_ini()
