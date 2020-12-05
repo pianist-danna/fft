@@ -18,7 +18,7 @@ print ("Numpy version:{0}".format(np.__version__))
 ###########################グローバル変数の初期値###########################
 base_dir = os.path.dirname(__file__)    #カレントディレクトリ
 
-a_index =   #オーディオインデックス
+a_index = None  #オーディオインデックス
 
 br = pyaudio.paInt16    #ビットレート
 sr = 44100  #サンプリングレート
@@ -33,6 +33,8 @@ class initial:
         self.br = br
         self.sr = sr
         self.chunk = chunk
+
+        #オーディオインデックスの取得に必要なので、pyaudioをインスタンス化
         self.pa = pyaudio.PyAudio()
 
     #オーディオインデックスの取得
@@ -121,7 +123,6 @@ class initial:
             )
         return self.base_dir,self.a_index,self.br,self.sr,self.chunk
 
-
 #%%
 class core:
     def __init__(self,a_index,br,sr,chunk):
@@ -152,3 +153,4 @@ class core:
         x = np.frombuffer(x,dtype = "int16") / ((np.power(2,16)/2)-1)
         return x
     
+#%%
